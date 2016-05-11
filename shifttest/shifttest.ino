@@ -6,11 +6,11 @@ int clockPin = 12;
 int dataPin = 11;
 
 unsigned long TimeLeft = 30;  // timinn sem vid faum ur pafanum
-unsigned long TimeToSplit = TimeLeft/ 8; // hofum 2 tvi tad eru adeins t led perur
+unsigned long TimeToSplit = TimeLeft/ 10; // hofum 2 tvi tad eru adeins t led perur
 unsigned long Timibyrjar, Timataka;
 
-int i = 9;
-int fjoldiPera = 9;
+int i = 10;
+int fjoldiPera = 10;
 
 void setup() {
   //set pins to output so you can control the shift register
@@ -26,14 +26,14 @@ void setup() {
 void loop() {
   // count from 0 to 255 and display the number 
   // on the LEDs
-  
+  while(i>0){
   Timataka=floor((millis() - Timibyrjar)/1000);
   
   float bla = Timataka*100;
   float blabla = TimeLeft*100;
+
   
   i = ceil((1 - float(Timataka)/float(TimeLeft)) * fjoldiPera) ;
-  
   
   Serial.print(i);
   Serial.print("        ");
@@ -41,28 +41,59 @@ void loop() {
 Serial.print("        ");
   Serial.println(((bla/blabla)));
   
+
   
   if(Timataka % 2 == 0 ){
+
+    if(i>8){
+      digitalWrite(latchPin, LOW);
+
+      shiftOut(dataPin, clockPin, ceil(pow(2,i-6)-2)); 
+      shiftOut(dataPin, clockPin, ceil(pow(2,i)-1)); 
+
+      digitalWrite(latchPin, HIGH);
+    }
+    else{
      digitalWrite(latchPin, LOW);
       // shift out the bits:
-      
-      shiftOut(dataPin, clockPin, ceil(pow(2,i)-1)); 
+      shiftOut(dataPin, clockPin, 2); 
       shiftOut(dataPin, clockPin, ceil(pow(2,i)-1)); 
       Serial.println(pow(2,8));
       //take the latch pin high so the LEDs will light up:
       digitalWrite(latchPin, HIGH);
+    }
   }
   else{
+
+        if(i>8){
+      digitalWrite(latchPin, LOW);
+
+      shiftOut(dataPin, clockPin, ceil(pow(2,i-7)-2)); 
+      shiftOut(dataPin, clockPin, ceil(pow(2,i)-1)); 
+
+      digitalWrite(latchPin, HIGH);
+    }
+    else{
     digitalWrite(latchPin, LOW);
       // shift out the bits:
       
-      shiftOut(dataPin, clockPin,  ceil(pow(2,i-1)-1));  
+      shiftOut(dataPin, clockPin,  2);  
       shiftOut(dataPin, clockPin, ceil(pow(2,i-1)-1));  
   
       //take the latch pin high so the LEDs will light up:
       digitalWrite(latchPin, HIGH);
+    }
   }
-  
+  }
+  while(i<1){
+    digitalWrite(latchPin, LOW);
+
+      shiftOut(dataPin, clockPin, 1); 
+      shiftOut(dataPin, clockPin, 0); 
+
+      digitalWrite(latchPin, HIGH);
+      delay(1000);
+  }
   
 
 }
