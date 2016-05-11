@@ -5,7 +5,7 @@ int clockPin = 12;
 ////Pin connected to DS of 74HC595
 int dataPin = 11;
 
-  unsigned long TimeLeft = 10;  // timinn sem vid faum ur pafanum
+  unsigned long TimeLeft = 30;  // timinn sem vid faum ur pafanum
   
   unsigned long TimeToSplit = TimeLeft/ 8; // hofum 2 tvi tad eru adeins t led perur
   unsigned long Timibyrjar, Timataka;
@@ -32,10 +32,10 @@ void loop() {
   
   Timataka=floor((millis() - Timibyrjar)/1000);
   
-  long bla = Timataka*100;
-  long blabla = TimeLeft*100000;
+  float bla = Timataka*100;
+  float blabla = TimeLeft*100;
   
-  i = ceil((1 - Timataka/TimeLeft) * fjoldiPera) ;
+  i = ceil((1 - float(Timataka)/float(TimeLeft)) * fjoldiPera) ;
   
   
   Serial.print(i);
