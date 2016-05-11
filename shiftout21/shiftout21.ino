@@ -1,3 +1,12 @@
+//**************************************************************//
+//  Name    : shiftOutCode, Dual Binary Counters                 //
+//  Author  : Carlyn Maw, Tom Igoe                               //
+//  Date    : 25 Oct, 2006                                       //
+//  Version : 1.0                                                //
+//  Notes   : Code for using a 74HC595 Shift Register            //
+//          : to count from 0 to 255                             //
+//**************************************************************//
+
 //Pin connected to ST_CP of 74HC595
 int latchPin = 8;
 //Pin connected to SH_CP of 74HC595
@@ -5,66 +14,30 @@ int clockPin = 12;
 ////Pin connected to DS of 74HC595
 int dataPin = 11;
 
-unsigned long TimeLeft = 30;  // timinn sem vid faum ur pafanum
-unsigned long TimeToSplit = TimeLeft/ 8; // hofum 2 tvi tad eru adeins t led perur
-unsigned long Timibyrjar, Timataka;
 
-int i = 9;
-int fjoldiPera = 9;
 
 void setup() {
-  //set pins to output so you can control the shift register
-  Serial.begin(9600);  
+  //Start Serial for debuging purposes  
+  Serial.begin(9600);
+  //set pins to output because they are addressed in the main loop
   pinMode(latchPin, OUTPUT);
-  //pinMode(clockPin, OUTPUT);
-  //pinMode(dataPin, OUTPUT);
-  
-  Timibyrjar= millis();
+
 }
 
-
 void loop() {
-  // count from 0 to 255 and display the number 
-  // on the LEDs
-  
-  Timataka=floor((millis() - Timibyrjar)/1000);
-  
-  float bla = Timataka*100;
-  float blabla = TimeLeft*100;
-  
-  i = ceil((1 - float(Timataka)/float(TimeLeft)) * fjoldiPera) ;
-  
-  
-  Serial.print(i);
-  Serial.print("        ");
-  Serial.print(Timataka);
-Serial.print("        ");
-  Serial.println(((bla/blabla)));
-  
-  
-  if(Timataka % 2 == 0 ){
-     digitalWrite(latchPin, LOW);
-      // shift out the bits:
-      
-      shiftOut(dataPin, clockPin, ceil(pow(2,i)-1)); 
-      shiftOut(dataPin, clockPin, ceil(pow(2,i)-1)); 
-      Serial.println(pow(2,8));
-      //take the latch pin high so the LEDs will light up:
-      digitalWrite(latchPin, HIGH);
+  //count up routine
+  for (int j = 0; j < 256; j++) {
+    //ground latchPin and hold low for as long as you are transmitting
+    digitalWrite(latchPin, 0);
+    //count up on GREEN LEDs
+    shiftOut(dataPin, clockPin, j); 
+    //count down on RED LEDs
+    shiftOut(dataPin, clockPin, 255-j);
+    //return the latch pin high to signal chip that it 
+    //no longer needs to listen for information
+    digitalWrite(latchPin, 1);
+    delay(1000);
   }
-  else{
-    digitalWrite(latchPin, LOW);
-      // shift out the bits:
-      
-      shiftOut(dataPin, clockPin,  ceil(pow(2,i-1)-1));  
-      shiftOut(dataPin, clockPin, ceil(pow(2,i-1)-1));  
-  
-      //take the latch pin high so the LEDs will light up:
-      digitalWrite(latchPin, HIGH);
-  }
-  
-  
-
 }
 
 void shiftOut(int myDataPin, int myClockPin, byte myDataOut) {
