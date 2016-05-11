@@ -5,6 +5,25 @@ int clockPin = 12;
 ////Pin connected to DS of 74HC595
 int dataPin = 11;
 
+//=========Banana tengi=========================================
+int analogPin1 = 0;     // potentiometer wiper (middle terminal) connected to analog pin 3
+int analogPin2 = 1;     // potentiometer wiper (middle terminal) connected to analog pin 3
+int analogPin3 = 2;     // potentiometer wiper (middle terminal) connected to analog pin 3
+int analogPin4 = 3;     // potentiometer wiper (middle terminal) connected to analog pin 3
+int analogPin5 = 4;     // potentiometer wiper (middle terminal) connected to analog pin 3
+
+int val1,val2,val3,val4,val5;           // variable to store the value read
+
+//gamalt
+//696 898 407 90 993 126,5
+//nytt
+// 685 882 402 93 829
+int rett1=685;
+int rett2=882;
+int rett3=402;
+int rett4=93;
+int rett5=829;
+//==============================================================
 unsigned long TimeLeft = 30;  // timinn sem vid faum ur pafanum
 unsigned long TimeToSplit = TimeLeft/ 10; // hofum 2 tvi tad eru adeins t led perur
 unsigned long Timibyrjar, Timataka;
@@ -28,7 +47,14 @@ void loop() {
   // on the LEDs
   while(i>0){
   Timataka=floor((millis() - Timibyrjar)/1000);
-  
+
+  //BANANATENGI======================================
+  val1 = analogRead(analogPin1);    // read the input pin
+  val2 = analogRead(analogPin2);    // read the input pin
+val3 = analogRead(analogPin3);    // read the input pin
+val4 = analogRead(analogPin4);    // read the input pin
+val5 = analogRead(analogPin5);    // read the input pin
+//=====================================================
   float bla = Timataka*100;
   float blabla = TimeLeft*100;
 
@@ -42,7 +68,20 @@ Serial.print("        ");
   Serial.println(((bla/blabla)));
   
 
-  
+  if(rett1-10< val1 && val1 <rett1+10 && val2>rett2-10 && val2<rett2+10
+&& val3>rett3-10 && val3<rett3+10 && val4>rett4-10 && val4<rett4+10
+&& val5>rett5-10 && val5<rett5+10 )
+{
+  Serial.print("meistaraverk");
+      digitalWrite(latchPin, LOW);
+
+      shiftOut(dataPin, clockPin, 1); 
+      shiftOut(dataPin, clockPin, 0); 
+
+      digitalWrite(latchPin, HIGH);
+  break;
+}
+
   if(Timataka % 2 == 0 ){
 
     if(i>8){
@@ -92,7 +131,7 @@ Serial.print("        ");
       shiftOut(dataPin, clockPin, 0); 
 
       digitalWrite(latchPin, HIGH);
-      delay(1000);
+
   }
   
 

@@ -3,18 +3,18 @@ int analogPin2 = 1;     // potentiometer wiper (middle terminal) connected to an
 int analogPin3 = 2;     // potentiometer wiper (middle terminal) connected to analog pin 3
 int analogPin4 = 3;     // potentiometer wiper (middle terminal) connected to analog pin 3
 int analogPin5 = 4;     // potentiometer wiper (middle terminal) connected to analog pin 3
-int analogPin6 = 5;     // potentiometer wiper (middle terminal) connected to analog pin 3
+//int analogPin6 = 5;     // potentiometer wiper (middle terminal) connected to analog pin 3
 
                        // outside leads to ground and +5V
 int val1,val2,val3,val4,val5,val6;           // variable to store the value read
 
 //696 898 407 90 993 126,5
 
-int rett1=696;
-int rett2=898;
-int rett3=407;
-int rett4=90;
-int rett5=993;
+int rett1=685;
+int rett2=882;
+int rett3=402;
+int rett4=93;
+int rett5=829;
 int rett6=126;
 
 // her byrjar ljosadaemid
@@ -54,7 +54,7 @@ val1 = analogRead(analogPin1);    // read the input pin
 val3 = analogRead(analogPin3);    // read the input pin
 val4 = analogRead(analogPin4);    // read the input pin
 val5 = analogRead(analogPin5);    // read the input pin
-val6 = analogRead(analogPin6);    // read the input pin
+//val6 = analogRead(analogPin6);    // read the input pin
 
   Serial.print(val1);             // debug value
   Serial.print("  ");             // debug value
@@ -69,7 +69,7 @@ val6 = analogRead(analogPin6);    // read the input pin
     Serial.println(val6);
 if(rett1-10< val1 && val1 <rett1+10 && val2>rett2-10 && val2<rett2+10
 && val3>rett3-10 && val3<rett3+10 && val4>rett4-10 && val4<rett4+10
-&& val5>rett5-10 && val5<rett5+10 && val6>rett6-10 && val6<rett6+10)
+&& val5>rett5-10 && val5<rett5+10 )
 {
   Serial.print("meistaraverk");
 }
